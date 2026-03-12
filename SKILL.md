@@ -3,6 +3,116 @@ name: xianxia
 description: 修仙知识管理系统（~/xianxia）。**必须使用此技能**当用户提到：混沌之气、灵石、炼化、阵法、传世之作、修炼、境界、成就、知识库、笔记、记录想法、工作日志、查知识等。系统核心：混沌之气(临时笔记)→每日炼化→灵石(永久知识)→阵法(主题连接)→传世之作(文章输出)。修炼值驱动境界提升，成就系统追踪进度。
 ---
 
+---
+
+# 系统初始化
+
+## 检测与初始化
+
+在使用仙侠技能之前，首先检测仙侠系统是否存在。如果不存在，自动创建。
+
+### 检测命令
+```bash
+ls ~/xianxia/ 2>/dev/null
+```
+
+### 如果系统不存在，执行初始化
+
+**触发词**：`"初始化仙侠系统"` / `"创建仙侠系统"` / 首次使用时自动触发
+
+**初始化流程**：
+
+1. **创建目录结构**
+```bash
+mkdir -p ~/xianxia/{000混沌之初,100秩序始端/{核心概念,实践应用,个人思考,疑难解答},300修身世界,400术法专攻,999系统外挂/{模板,修炼系统,使用指南,日记}}
+```
+
+2. **从技能模板复制到系统**
+```bash
+# 复制模板
+cp ~/.openclaw/skills/xianxia/templates/*.md ~/xianxia/999系统外挂/模板/
+
+# 复制参考资料
+cp ~/.openclaw/skills/xianxia/references/*.md ~/xianxia/999系统外挂/修炼系统/
+```
+
+3. **创建初始文件**
+
+**README.md**（仙侠系统说明）：
+```markdown
+# 修仙知识库系统
+
+由仙侠技能自动创建的修仙主题个人知识管理系统。
+
+## 快速开始
+- 记录混沌之气：对驻守说"记一下..."
+- 炼化灵石：对驻守说"炼化..."
+- 查询知识：对驻守说"查询灵石..."
+
+## 修炼境界
+当前境界：炼气期一层
+修炼值：0/1000
+
+---
+创建时间：YYYY-MM-DD
+```
+
+**我的修炼状态.md**（修炼状态看板）：
+```markdown
+---
+type: 修炼状态
+cultivation_start: YYYY-MM-DD
+current_realm: 炼气期
+current_level: 一层
+total_cultivation_value: 0
+daily_streak: 0
+achievements: []
+tags: [系统, 状态]
+---
+
+# 修炼状态看板
+
+## 当前境界
+炼气期一层 (0/1000 修炼值)
+
+## 修炼数据总览
+- 灵石笔记：0 个
+- 阵法核心：0 个
+- 传世之作：0 个
+- 双向链接：0 个
+
+## 修炼目标
+- [ ] 创建第一个灵石笔记
+- [ ] 累计 10 个灵石
+- [ ] 创建第一个阵法核心
+
+---
+**修炼提示**: 开始你的修仙之旅吧！
+```
+
+4. **初始化 Git 仓库**（可选）
+```bash
+cd ~/xianxia
+git init
+git add .
+git commit -m "feat: 初始化仙侠知识库系统"
+```
+
+5. **返回确认信息**
+```
+✅ 仙侠系统已初始化！
+📍 位置：~/xianxia/
+📚 目录结构已创建
+📝 模板已复制（9个）
+🏆 修炼系统已就绪
+
+开始修炼：
+- 记录混沌之气：说"记一下..."
+- 查看修炼状态：说"我的修炼状态"
+```
+
+---
+
 # 修仙知识管理系统
 
 建平儿的仙侠主题个人知识管理系统，融合 Zettelkasten 卡片笔记法。
@@ -69,12 +179,24 @@ description: 修仙知识管理系统（~/xianxia）。**必须使用此技能**
 
 执行操作时，使用 **read 工具** 读取对应模板：
 ```bash
-read ~/.openclaw/skills/xianxia/templates/chaos.md      # 记录混沌之气
-read ~/.openclaw/skills/xianxia/templates/spirit.md     # 炼化灵石
-read ~/.openclaw/skills/xianxia/templates/secret.md     # 创建秘籍残页
-read ~/.openclaw/skills/xianxia/templates/array.md      # 创建阵法核心
-read ~/.openclaw/skills/xianxia/templates/article.md    # 创建传世之作
+# 笔记模板
+read ~/.openclaw/skills/xianxia/templates/chaos.md      # 混沌之气
+read ~/.openclaw/skills/xianxia/templates/spirit.md     # 灵石笔记
+read ~/.openclaw/skills/xianxia/templates/secret.md     # 秘籍残页
+read ~/.openclaw/skills/xianxia/templates/array.md      # 阵法核心
+read ~/.openclaw/skills/xianxia/templates/article.md    # 传世之作
+
+# 日志模板
+read ~/.openclaw/skills/xianxia/templates/refining-log.md  # 炼化日志
+read ~/.openclaw/skills/xianxia/templates/morning.md       # 晨间修炼
+read ~/.openclaw/skills/xianxia/templates/evening.md       # 晚间炼化
+read ~/.openclaw/skills/xianxia/templates/diary.md         # 修炼日记
 ```
+
+**说明**：
+- 仙侠技能包含所有必要的模板，是独立自包含的
+- 可以在没有仙侠系统的情况下，通过初始化创建完整的仙侠系统
+- 日志模板提供多种选择：炼化日志（简化）、晨间修炼、晚间炼化、修炼日记（完整）
 
 ---
 
@@ -123,13 +245,43 @@ read ~/.openclaw/skills/xianxia/templates/article.md    # 创建传世之作
 
 **检测时机**：每炼化一个灵石后
 
+**关键词提取方法**：
+1. 从标题中提取名词和动词（排除停用词：的、了、在、是等）
+2. 从核心观点中提取重复出现的词汇（≥2次）
+3. 从标签中提取主题词
+4. 合并去重，得到关键词列表
+
+**关键词提取示例**：
+```markdown
+标题："OpenClaw配置修改注意事项"
+核心观点："修改OpenClaw配置时需要注意权限问题"
+标签：#技术/OpenClaw/配置
+
+提取关键词：OpenClaw、配置、修改、权限、注意事项
+```
+
 **检测方法**：
 1. 提取新灵石的关键词和主题
-2. 在知识库中搜索相关灵石
-3. 判断关联强度：
-   - **强关联**：关键词匹配 ≥ 3 个 → 添加双向链接
-   - **中等关联**：关键词匹配 1-2 个 → 评估是否添加链接
-   - **弱关联**：主题相关但关键词不匹配 → 记录待观察
+2. 在知识库中搜索相关灵石（使用 grep 搜索关键词）
+3. 计算关键词匹配度
+
+**关联强度判断**：
+- **强关联**：关键词匹配 ≥ 3 个 → **自动建立双向链接**
+- **中等关联**：关键词匹配 1-2 个 → 评估主题相关性后决定
+- **弱关联**：主题相关但关键词不匹配 → 记录待观察，不强制建立链接
+
+**中等关联评估示例**：
+```markdown
+❌ 不建立链接的情况：
+灵石A："OpenClaw配置修改"（关键词：OpenClaw、配置）
+灵石B："Git提交规范"（关键词：Git、提交）
+判断：虽然都涉及"修改/提交"动作，但主题不相关 → 不建立链接
+
+✅ 建立链接的情况：
+灵石A："OpenClaw配置修改"（关键词：OpenClaw、配置）
+灵石B："OpenClaw安装指南"（关键词：OpenClaw、安装）
+判断：都有"OpenClaw"关键词，主题相关 → 建立链接
+```
 
 **双向链接格式**：
 ```markdown
@@ -146,6 +298,34 @@ read ~/.openclaw/skills/xianxia/templates/article.md    # 创建传世之作
 - 当发现 3+ 个灵石属于同一主题时
 - 创建或更新阵法核心，将这些灵石链接起来
 - 在每个灵石中添加 `[[阵法核心]]` 链接
+
+### 链接维护机制
+
+**灵石重命名时**：
+1. 检测是否有其他灵石引用该灵石
+2. 如果有，更新所有 `[[旧名称]]` 为 `[[新名称]]`
+3. 更新修炼日记中的引用
+
+**灵石删除时**：
+1. 检查是否有其他灵石引用该灵石（grep 搜索 `[[灵石名称]]`）
+2. 如果有引用：
+   - 提示用户："有 X 个灵石引用此灵石，是否继续删除？"
+   - 如果用户确认，删除所有指向该灵石的链接
+3. 更新修炼日记
+
+**链接失效检测**：
+- 定期（每周）检查所有双向链接的有效性
+- 发现失效链接时，记录到"待修复链接"列表
+- 提示用户处理
+
+**链接更新命令**：
+```bash
+# 搜索引用某灵石的所有文件
+grep -r "\[\[灵石名称\]\]" ~/xianxia/
+
+# 批量替换链接名称
+sed -i 's/\[\[旧名称\]\]/[[新名称]]/g' ~/xianxia/**/*.md
+```
 
 ---
 
@@ -289,15 +469,77 @@ ls -lt ~/xianxia/999系统外挂/日记/*/*/*.md | head -10
 
 # 模板与参考资料
 
+## 笔记模板（5个）
+
+| 文件 | 用途 | 修炼值 |
+|------|------|--------|
+| `templates/chaos.md` | 混沌之气模板 | +1 |
+| `templates/spirit.md` | 灵石笔记模板 | +10 |
+| `templates/secret.md` | 秘籍残页模板 | +5 |
+| `templates/array.md` | 阵法核心模板 | +50 |
+| `templates/article.md` | 传世之作模板 | +100 |
+
+## 日志模板（4个）
+
+| 文件 | 用途 | 使用时机 |
+|------|------|---------|
+| `templates/refining-log.md` | 炼化日志（简化） | 每日炼化后 |
+| `templates/morning.md` | 晨间修炼 | 每日早晨 |
+| `templates/evening.md` | 晚间炼化 | 每日晚上 |
+| `templates/diary.md` | 修炼日记（完整） | 每日总结 |
+
+## 参考资料（2个）
+
 | 文件 | 用途 |
 |------|------|
-| `templates/chaos.md` | 混沌之气模板 |
-| `templates/spirit.md` | 灵石笔记模板 |
-| `templates/secret.md` | 秘籍残页模板 |
-| `templates/array.md` | 阵法核心模板 |
-| `templates/article.md` | 传世之作模板 |
-| `references/realm.md` | 修炼境界体系 |
-| `references/achievement.md` | 成就系统 |
+| `references/realm.md` | 修炼境界体系（9个大境界、突破条件、修炼值规则） |
+| `references/achievement.md` | 成就系统（20+成就、称号系统） |
+
+## 初始化文件（系统创建时生成）
+
+当执行"初始化仙侠系统"时，会创建：
+- `README.md` - 系统说明
+- `999系统外挂/修炼系统/我的修炼状态.md` - 修炼状态看板
+- 完整的目录结构
+
+---
+
+## 模板使用示例
+
+### 记录混沌之气
+```bash
+# 1. 读取模板
+read ~/.openclaw/skills/xianxia/templates/chaos.md
+
+# 2. 填充内容
+write ~/xianxia/000混沌之初/标题-20260312123456.md
+
+# 3. 返回确认
+✅ 已记录混沌之气
+📍 ~/xianxia/000混沌之初/标题-20260312123456.md
+💡 修炼值 +1
+```
+
+### 炼化灵石
+```bash
+# 1. 读取混沌之气
+read ~/xianxia/000混沌之初/标题-20260312123456.md
+
+# 2. 读取灵石模板
+read ~/.openclaw/skills/xianxia/templates/spirit.md
+
+# 3. 提炼核心观点，创建灵石
+write ~/xianxia/100秩序始端/实践应用/灵石名称-20260312123500.md
+
+# 4. 检测主题关联，建立双向链接
+# 5. 标记混沌之气为已炼化
+# 6. 记录修炼日记
+
+✅ 炼化完成！
+📍 ~/xianxia/100秩序始端/实践应用/灵石名称-20260312123500.md
+🔗 双向链接：[[相关灵石]]
+💎 修炼值 +10 +4（链接奖励）
+```
 
 ---
 

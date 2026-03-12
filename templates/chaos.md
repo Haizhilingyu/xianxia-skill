@@ -4,8 +4,8 @@
 ---
 type: 混沌之气
 created: YYYY-MM-DD HH:mm:ss
-capture_device: OpenClaw
-source: 建平儿
+capture_device:
+source:
 status: 未提炼
 cultivation_value: 1
 tags: [混沌]
@@ -25,3 +25,13 @@ tags: [混沌]
 ---
 **修炼提示**: 这是一团混沌之气，需要经过"炼化"才能转化为灵石笔记
 ```
+
+---
+
+## 使用说明
+
+**位置**：`000混沌之初/标题-YYYYMMDDHHmmss.md`
+
+**触发词**：`"混沌之气"` / `"记一下"` / `"写个笔记"`
+
+**修炼值**：+1
